@@ -2,12 +2,12 @@
 
 import { motion } from 'framer-motion';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
+import { slideUp } from '@/lib/motion';
 
 interface SlideUpProps {
   children: React.ReactNode;
   className?: string;
   delay?: number;
-  duration?: number;
   distance?: number;
   once?: boolean;
 }
@@ -15,14 +15,13 @@ interface SlideUpProps {
 /**
  * SlideUp — fade-in + translate-Y ao entrar na viewport.
  * Respeita prefers-reduced-motion.
+ * Usa tokens centralizados de `@/lib/motion`.
  * Distância padrão: 30px (conforme briefing).
- * Duração padrão: 0.5s.
  */
 export function SlideUp({
   children,
   className,
   delay = 0,
-  duration = 0.5,
   distance = 30,
   once = true,
 }: SlideUpProps) {
@@ -32,17 +31,16 @@ export function SlideUp({
     return <div className={className}>{children}</div>;
   }
 
+  const variants = slideUp(distance);
+
   return (
     <motion.div
       className={className}
-      initial={{ opacity: 0, y: distance }}
-      whileInView={{ opacity: 1, y: 0 }}
+      variants={variants}
+      initial="hidden"
+      whileInView="visible"
       viewport={{ once, margin: '-50px' }}
-      transition={{
-        duration,
-        delay,
-        ease: [0.16, 1, 0.3, 1],
-      }}
+      transition={{ delay }}
     >
       {children}
     </motion.div>

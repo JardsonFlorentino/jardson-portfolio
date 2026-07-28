@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
+import { fadeIn } from '@/lib/motion';
 
 interface FadeInProps {
   children: React.ReactNode;
@@ -14,13 +15,12 @@ interface FadeInProps {
 /**
  * FadeIn — animação de fade-in ao entrar na viewport.
  * Respeita prefers-reduced-motion (desativa animação).
- * Duração padrão: 0.5s (conforme briefing).
+ * Usa tokens centralizados de `@/lib/motion`.
  */
 export function FadeIn({
   children,
   className,
   delay = 0,
-  duration = 0.5,
   once = true,
 }: FadeInProps) {
   const reducedMotion = useReducedMotion();
@@ -32,14 +32,11 @@ export function FadeIn({
   return (
     <motion.div
       className={className}
-      initial={{ opacity: 0 }}
-      whileInView={{ opacity: 1 }}
+      variants={fadeIn}
+      initial="hidden"
+      whileInView="visible"
       viewport={{ once, margin: '-50px' }}
-      transition={{
-        duration,
-        delay,
-        ease: [0.25, 0.1, 0.25, 1],
-      }}
+      transition={{ delay }}
     >
       {children}
     </motion.div>

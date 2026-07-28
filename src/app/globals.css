@@ -2,7 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ─── Base ─────────────────────────────────── */
+/* ───────────────────────────────────────────────
+ *  BASE LAYER
+ * ─────────────────────────────────────────────── */
 @layer base {
   html {
     scroll-behavior: auto; /* Lenis handles smooth scrolling */
@@ -11,6 +13,13 @@
   body {
     @apply bg-background text-foreground antialiased;
     font-family: var(--font-inter), system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Improve text rendering on dark backgrounds */
+  body {
+    text-rendering: optimizeLegibility;
   }
 
   /* Selection */
@@ -18,13 +27,52 @@
     @apply bg-accent/20 text-foreground;
   }
 
-  /* Focus ring */
+  /* Focus visible — acessível mas discreto */
   *:focus-visible {
-    @apply outline-2 outline-offset-2 outline-accent;
+    @apply outline-2 outline-offset-2 outline-accent outline-dashed;
+  }
+
+  /* Remover outline para interações com mouse */
+  *:focus:not(:focus-visible) {
+    outline: none;
   }
 }
 
-/* ─── Scrollbar ────────────────────────────── */
+/* ───────────────────────────────────────────────
+ *  COMPONENTS LAYER — padrões reutilizáveis
+ * ─────────────────────────────────────────────── */
+@layer components {
+  /* Underline animado para links inline */
+  .link-underline {
+    @apply relative inline-block;
+  }
+  .link-underline::after {
+    content: '';
+    @apply absolute bottom-0 left-0 h-px w-0 bg-foreground transition-all duration-300;
+  }
+  .link-underline:hover::after {
+    @apply w-full;
+  }
+
+  /* Glass card */
+  .glass {
+    @apply border border-border bg-glass backdrop-blur-xl;
+  }
+
+  /* Text gradient (accent) */
+  .text-gradient {
+    @apply bg-gradient-to-r from-accent to-accent-light bg-clip-text text-transparent;
+  }
+
+  /* Focus ring padronizado */
+  .focus-ring {
+    @apply focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent;
+  }
+}
+
+/* ───────────────────────────────────────────────
+ *  UTILITIES
+ * ─────────────────────────────────────────────── */
 @layer utilities {
   .scrollbar-hide {
     -ms-overflow-style: none;
@@ -35,7 +83,9 @@
   }
 }
 
-/* ─── Lenis ────────────────────────────────── */
+/* ───────────────────────────────────────────────
+ *  LENIS (smooth scroll)
+ * ─────────────────────────────────────────────── */
 html.lenis {
   height: auto;
 }

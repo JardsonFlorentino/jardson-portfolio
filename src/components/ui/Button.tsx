@@ -15,14 +15,16 @@ interface ButtonBaseProps {
   className?: string;
 }
 
-const variants: Record<ButtonVariant, string> = {
+const variantStyles: Record<ButtonVariant, string> = {
   primary:
-    'bg-accent text-white hover:bg-accent-hover shadow-sm hover:shadow-md',
-  secondary: 'border border-border bg-surface text-foreground hover:bg-surface/80',
-  ghost: 'text-muted hover:text-foreground hover:bg-surface/50',
+    'bg-accent text-white shadow-button hover:shadow-button-hover hover:bg-accent-hover',
+  secondary:
+    'border border-border bg-surface text-foreground hover:bg-surface-hover',
+  ghost:
+    'text-muted hover:text-foreground hover:bg-surface/50',
 };
 
-const sizes: Record<ButtonSize, string> = {
+const sizeStyles: Record<ButtonSize, string> = {
   sm: 'px-4 py-2 text-sm',
   md: 'px-6 py-3 text-base',
   lg: 'px-8 py-4 text-lg',
@@ -30,7 +32,9 @@ const sizes: Record<ButtonSize, string> = {
 
 /**
  * Button — botão interativo com hover/active animations.
- * Usa motion.button do Framer Motion. Para links, use <ButtonLink />.
+ * Usa motion.button do Framer Motion.
+ * Variantes: primary, secondary, ghost.
+ * Tamanhos: sm, md, lg.
  */
 const Button = forwardRef<HTMLButtonElement, ButtonBaseProps & React.ComponentPropsWithoutRef<typeof motion.button>>(
   ({ variant = 'primary', size = 'md', className, children, ...props }, ref) => {
@@ -40,11 +44,12 @@ const Button = forwardRef<HTMLButtonElement, ButtonBaseProps & React.ComponentPr
       <motion.button
         ref={ref}
         className={cn(
-          'inline-flex items-center justify-center gap-2 rounded-lg font-medium transition-colors',
+          'inline-flex items-center justify-center gap-2 rounded-lg font-medium',
+          'transition-colors duration-fast',
           'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent',
           'disabled:pointer-events-none disabled:opacity-50',
-          variants[variant],
-          sizes[size],
+          variantStyles[variant],
+          sizeStyles[size],
           className,
         )}
         whileHover={reducedMotion ? {} : { scale: 1.03 }}
@@ -64,7 +69,7 @@ export { Button, type ButtonVariant, type ButtonSize };
 
 /**
  * ButtonLink — botão que renderiza um <a> com animações.
- * Separado do Button para evitar conflitos de tipo entre HTMLButtonElement e HTMLAnchorElement.
+ * Separado do Button para evitar conflitos de tipo.
  */
 const ButtonLink = forwardRef<HTMLAnchorElement, ButtonBaseProps & React.ComponentPropsWithoutRef<typeof motion.a>>(
   ({ variant = 'primary', size = 'md', className, children, ...props }, ref) => {
@@ -74,10 +79,11 @@ const ButtonLink = forwardRef<HTMLAnchorElement, ButtonBaseProps & React.Compone
       <motion.a
         ref={ref}
         className={cn(
-          'inline-flex items-center justify-center gap-2 rounded-lg font-medium transition-colors',
+          'inline-flex items-center justify-center gap-2 rounded-lg font-medium',
+          'transition-colors duration-fast',
           'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent',
-          variants[variant],
-          sizes[size],
+          variantStyles[variant],
+          sizeStyles[size],
           className,
         )}
         whileHover={reducedMotion ? {} : { scale: 1.03 }}

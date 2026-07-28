@@ -3,6 +3,7 @@ import { getMessages } from 'next-intl/server';
 import { inter, cabinetGrotesk } from '@/lib/fonts';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
+import { SmoothScroll } from '@/components/SmoothScroll';
 
 export default async function LocaleLayout({
   children,
@@ -21,9 +22,11 @@ export default async function LocaleLayout({
     >
       <body className="min-h-screen bg-background font-sans text-foreground antialiased">
         <NextIntlClientProvider messages={messages}>
-          <Header />
-          <main>{children}</main>
-          <Footer />
+          <SmoothScroll>
+            <Header />
+            <main>{children}</main>
+            <Footer />
+          </SmoothScroll>
         </NextIntlClientProvider>
       </body>
     </html>

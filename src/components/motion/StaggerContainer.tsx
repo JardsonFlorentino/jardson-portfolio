@@ -2,23 +2,27 @@
 
 import { motion } from 'framer-motion';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
+import { staggerContainer, slideUp } from '@/lib/motion';
 
 interface StaggerContainerProps {
   children: React.ReactNode;
   className?: string;
   staggerDelay?: number;
+  distance?: number;
   once?: boolean;
 }
 
 /**
  * StaggerContainer — container que anima filhos em sequência (stagger).
- * Cada filho deve ter motion ou wrapper com animação individual.
+ * Cada filho recebe a variante slideUp automaticamente.
+ * Usa tokens centralizados de `@/lib/motion`.
  * Stagger delay padrão: 0.1s (conforme briefing).
  */
 export function StaggerContainer({
   children,
   className,
   staggerDelay = 0.1,
+  distance = 30,
   once = true,
 }: StaggerContainerProps) {
   const reducedMotion = useReducedMotion();
@@ -37,6 +41,8 @@ export function StaggerContainer({
     },
   };
 
+  const childVariants = slideUp(distance);
+
   return (
     <motion.div
       className={className}
@@ -45,7 +51,16 @@ export function StaggerContainer({
       whileInView="visible"
       viewport={{ once, margin: '-50px' }}
     >
-      {children}
+      {/* Passa a variante para cada filho via cloneElement ou wrapper */}
+      {Array.isArray(children)
+        ? children.map((child, i) =>
+            child ? (
+              <motion.div key={i} variants={childVariants}>
+                {child}
+              </motion.div>
+            ) : null,
+          )
+        : children}
     </motion.div>
   );
 }
