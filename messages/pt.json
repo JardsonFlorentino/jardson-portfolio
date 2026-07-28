@@ -1,0 +1,22 @@
+{
+  "site": {
+    "title": "Jardson Florentino — Desenvolvedor Full-Stack",
+    "description": "Desenvolvedor Full-Stack que constrói sistemas completos que entregam resultado mensurável."
+  },
+  "nav": {
+    "hero": "Início",
+    "projects": "Projetos",
+    "about": "Sobre",
+    "stack": "Stack",
+    "contact": "Contato"
+  },
+  "hero": {
+    "title": "Desenvolvedor Full-Stack",
+    "headline": "Sistemas completos que entregam resultado mensurável",
+    "cta_projects": "Ver Projetos",
+    "cta_contact": "Entrar em Contato"
+  },
+  "footer": {
+    "rights": "Todos os direitos reservados."
+  }
+}

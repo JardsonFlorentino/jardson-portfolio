@@ -1,0 +1,40 @@
+# ──────────────────────────────────────────────
+# Dependências
+# ──────────────────────────────────────────────
+node_modules/
+.next/
+
+# ──────────────────────────────────────────────
+# Ambiente
+# ──────────────────────────────────────────────
+.env
+.env.local
+.env.*.local
+
+# ──────────────────────────────────────────────
+# Sistema
+# ──────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+
+# ──────────────────────────────────────────────
+# IDE / Editor
+# ──────────────────────────────────────────────
+.vscode/
+
+# ──────────────────────────────────────────────
+# Contexto do Claude Code (memória local do projeto)
+# Mantido fora do Git para preservar briefing, roadmap e configurações locais
+# sem poluir o repositório remoto.
+# ──────────────────────────────────────────────
+# CLAUDE.md                ← Regras de contexto do projeto
+# CLAUDE.local.md          ← Regras locais (se criado)
+# docs-ai/                 ← Briefing executivo, roadmap, documentos de decisão
+# .claude/                 ← Configurações e permissões do Claude Code
+#
+# Se desejar versionar algum desses arquivos (ex: compartilhar briefing com time),
+# remova ou comente a linha correspondente.
+/CLAUDE.md
+/CLAUDE.local.md
+/docs-ai/
+/.claude/
