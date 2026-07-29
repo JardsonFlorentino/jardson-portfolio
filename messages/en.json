@@ -1,7 +1,7 @@
 {
   "site": {
     "title": "Jardson Florentino — Full-Stack Developer",
-    "description": "Full-Stack Developer who builds complete systems that deliver measurable results."
+    "description": "Full-Stack Developer. I build complete systems — from frontend to backend, from idea to deploy — focused on performance, clarity, and results."
   },
   "nav": {
     "hero": "Home",
@@ -11,10 +11,14 @@
     "contact": "Contact"
   },
   "hero": {
-    "title": "Full-Stack Developer",
-    "headline": "Complete systems that deliver measurable results",
+    "role": "Full-Stack Developer",
+    "headline_l1": "SYSTEMS",
+    "headline_l2": "THAT",
+    "headline_l3": "DELIVER.",
+    "subheadline": "I build complete systems — from frontend to backend, from idea to deploy — focused on performance, clarity, and results.",
     "cta_projects": "View Projects",
-    "cta_contact": "Get in Touch"
+    "cta_contact": "Let's Talk",
+    "stats": "+15 projects in production · 65% more efficiency · 3+ years in market"
   },
   "footer": {
     "rights": "All rights reserved."

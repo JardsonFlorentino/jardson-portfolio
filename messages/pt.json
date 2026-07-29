@@ -1,7 +1,7 @@
 {
   "site": {
-    "title": "Jardson Florentino — Desenvolvedor Full-Stack",
-    "description": "Desenvolvedor Full-Stack que constrói sistemas completos que entregam resultado mensurável."
+    "title": "Jardson Florentino — Full-Stack Developer",
+    "description": "Full-Stack Developer. Construo sistemas completos — do frontend ao backend, da ideia ao deploy — com foco em performance, clareza e resultado."
   },
   "nav": {
     "hero": "Início",
@@ -11,10 +11,20 @@
     "contact": "Contato"
   },
   "hero": {
-    "title": "Desenvolvedor Full-Stack",
-    "headline": "Sistemas completos que entregam resultado mensurável",
-    "cta_projects": "Ver Projetos",
-    "cta_contact": "Entrar em Contato"
+    "role": "Full-Stack Developer",
+    "headline_l1": "CÓDIGO, PRODUTO",
+    "headline_l2": "&",
+    "headline_l3": "PERFORMANCE.",
+    "subheadline": "Desenvolvo software end-to-end com arquitetura robusta e uma obsessão por pixel-perfect UIs e performance.",
+    "cta_projects": "Ver projetos",
+    "cta_contact": "Vamos conversar",
+    "stat_projects_value": "15+",
+    "stat_projects_label": "Projetos Entregues",
+    "stat_stack_value": "React & Node.js",
+    "stat_stack_label": "Ecossistema Principal",
+    "social_email": "Email",
+    "social_github": "GitHub",
+    "social_linkedin": "LinkedIn"
   },
   "footer": {
     "rights": "Todos os direitos reservados."
