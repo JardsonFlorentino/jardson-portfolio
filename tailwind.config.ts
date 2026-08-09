@@ -1,206 +1,192 @@
 import type { Config } from 'tailwindcss';
 
+/**
+ * DESIGN SYSTEM — "Sistemas em produção"
+ * Referência: docs-ai/DIRECAO_CRIATIVA_V2.md
+ *
+ * v3 — azul como cor de marca + camada de atmosfera.
+ *
+ * Sobre o azul: o problema nunca foi a cor, foi o TOM.
+ * #3B82F6 é literalmente blue-500 do Tailwind — o azul mais usado da internet.
+ * #2E63FF é ultramarino elétrico: mesma família, muito mais voltagem,
+ * e não parece template.
+ */
 const config: Config = {
-  content: [
-    './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/components/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/app/**/*.{js,ts,jsx,tsx,mdx}',
-  ],
+  content: ['./src/**/*.{js,ts,jsx,tsx,mdx}'],
   theme: {
     extend: {
-      // ─────────────────────────────────────────────────
-      //  1. FONT FAMILY
-      // ─────────────────────────────────────────────────
       fontFamily: {
         sans: ['var(--font-inter)', 'system-ui', 'sans-serif'],
-        display: ['var(--font-cabinet-grotesk)', 'var(--font-inter)', 'sans-serif'],
+        display: ['var(--font-switzer)', 'var(--font-inter)', 'sans-serif'],
+        mono: ['var(--font-mono)', 'ui-monospace', 'monospace'],
       },
 
-      // ─────────────────────────────────────────────────
-      //  2. TYPOGRAPHIC SCALE (com clamp)
-      // ─────────────────────────────────────────────────
+      /**
+       * ESCALA TIPOGRÁFICA — escada de razão ~1.45
+       *
+       * Medida em 1440px: 112 / 60 / 40 / 27 / 20 / 16 / 12
+       *
+       * O problema da versão anterior: `display-lg` chegava a 80px e era
+       * usada tanto na dobradiça quanto nos títulos de seção. Resultado:
+       * "Sistemas" competia de igual para igual com o hero, e a hierarquia
+       * do site ficava plana no topo.
+       *
+       * Agora cada tamanho tem UM papel:
+       *   display-xl  hero, e só o hero
+       *   display-lg  a frase da dobradiça (momento declarado)
+       *   heading     títulos de seção
+       *   title       títulos de card
+       */
       fontSize: {
-        // Display — hero heading (máximo impacto)
-        display: [
-          'clamp(2.5rem, 6vw, 5rem)',
-          { lineHeight: '1.05', letterSpacing: '-0.03em', fontWeight: '800' },
+        // Máximo 80px, mínimo 40px.
+        // O máximo veio de 136px: com o índice à esquerda e a lede mais
+        // os CTAs na mesma dobra, 136px estourava o grid.
+        // O mínimo subiu de 34px: num iPhone o clamp caía no piso, e o
+        // celular — onde a maioria abre — recebia o headline pequeno,
+        // contrariando todo o argumento sobre escala tipográfica.
+        'display-xl': [
+          'clamp(2.5rem, 5.6vw, 5rem)',
+          { lineHeight: '0.92', letterSpacing: '-0.04em', fontWeight: '700' },
         ],
-        // Heading 1 — títulos de seção
-        'h1': [
-          'clamp(2rem, 4vw, 3rem)',
-          { lineHeight: '1.1', letterSpacing: '-0.02em', fontWeight: '700' },
+        'display-lg': [
+          'clamp(2rem, 4.6vw, 3.75rem)',
+          { lineHeight: '0.95', letterSpacing: '-0.03em', fontWeight: '700' },
         ],
-        // Heading 2 — subtítulos de seção
-        'h2': [
-          'clamp(1.5rem, 3vw, 2.25rem)',
+        heading: [
+          'clamp(1.625rem, 3vw, 2.5rem)',
+          { lineHeight: '1.05', letterSpacing: '-0.025em', fontWeight: '700' },
+        ],
+        title: [
+          'clamp(1.25rem, 1.9vw, 1.75rem)',
           { lineHeight: '1.15', letterSpacing: '-0.015em', fontWeight: '600' },
         ],
-        // Heading 3 — títulos de card
-        'h3': [
-          'clamp(1.125rem, 2vw, 1.5rem)',
-          { lineHeight: '1.25', letterSpacing: '-0.01em', fontWeight: '600' },
+        lede: [
+          'clamp(1.0625rem, 1.4vw, 1.25rem)',
+          { lineHeight: '1.55', letterSpacing: '-0.01em', fontWeight: '400' },
         ],
-        // Heading 4 — títulos pequenos
-        'h4': [
-          'clamp(1rem, 1.5vw, 1.125rem)',
-          { lineHeight: '1.3', letterSpacing: '-0.005em', fontWeight: '500' },
-        ],
-        // Body — texto corrido
-        'body': [
-          'clamp(0.875rem, 1.5vw, 1rem)',
-          { lineHeight: '1.6', fontWeight: '400' },
-        ],
-        // Small — labels, legendas
-        'sm': [
-          'clamp(0.75rem, 1.2vw, 0.875rem)',
-          { lineHeight: '1.5', letterSpacing: '0.01em' },
-        ],
-        // XS — badges, metadados
-        'xs': [
-          '0.75rem',
-          { lineHeight: '1.4', letterSpacing: '0.02em' },
-        ],
+        body: ['1rem', { lineHeight: '1.65', fontWeight: '400' }],
+        // 12px, não 11px: mono em caixa alta com tracking de 0.1em fica
+        // desconfortável abaixo disso.
+        meta: ['0.75rem', { lineHeight: '1.45', letterSpacing: '0.09em', fontWeight: '500' }],
       },
 
-      // ─────────────────────────────────────────────────
-      //  3. COLORS (token system)
-      // ─────────────────────────────────────────────────
       colors: {
-        // Background (nível 0)
-        background: '#0a0a0b',
-
-        // Superfícies (nível 1+)
+        bg: '#07070A',
         surface: {
-          DEFAULT: '#111113',
-          hover: '#1a1a1d',
-          active: '#222225',
+          DEFAULT: '#0E0E13',
+          raised: '#14141B',
+          hover: '#1A1A23',
         },
-
-        // Foreground (texto)
-        foreground: '#f5f5f7',
-        muted: '#86868b',
-
-        // Borda
-        border: 'rgba(255, 255, 255, 0.06)',
-        'border-hover': 'rgba(255, 255, 255, 0.1)',
-
-        // Accent (azul elétrico — uso moderado)
+        line: {
+          DEFAULT: '#1F1F29', // 1.5:1 — hairline decorativa, uso não-interativo
+          strong: '#2E2E3B', // 1.7:1 — divisor enfatizado
+          // WCAG 1.4.11 exige 3:1 no limite de componente de INTERFACE.
+          // Em card decorativo a hairline fraca é escolha estética legítima;
+          // em campo de formulário é falha de conformidade — o usuário precisa
+          // enxergar onde o campo começa. 3.33:1 contra o fundo do input.
+          field: '#63647A',
+        },
+        fg: {
+          DEFAULT: '#F2F3F7', // 18.1:1 sobre bg
+          muted: '#8E8FA0', //  6.3:1 sobre bg
+          // Era #5B5C6E = 3.07:1 — FALHAVA WCAG AA em texto pequeno,
+          // e é justamente a cor de todos os labels mono de 12px do site.
+          // #7C7E92 dá 5.04:1 sobre bg e 4.82:1 sobre surface.
+          dim: '#7C7E92',
+        },
+        // ── AZUL DA MARCA ──────────────────────────
         accent: {
-          DEFAULT: '#3B82F6',
-          hover: '#2563EB',
-          light: '#60A5FA',
-          glow: 'rgba(59, 130, 246, 0.15)',
+          DEFAULT: '#2E63FF', // ultramarino elétrico
+          bright: '#6E93FF', // texto/ícone sobre fundo escuro
+          soft: '#A8BEFF', // realce tipográfico
+          deep: '#1533B8', // pressed / gradiente
         },
-
-        // Utilitários semânticos
-        success: '#22C55E',
-        warning: '#F59E0B',
-        error: '#EF4444',
       },
 
-      // ─────────────────────────────────────────────────
-      //  4. BACKGROUND / SURFACE PATTERNS
-      // ─────────────────────────────────────────────────
-      backgroundColor: {
-        glass: 'rgba(17, 17, 19, 0.8)',
+      backgroundImage: {
+        // Gradiente de realce tipográfico
+        'accent-sweep':
+          'linear-gradient(100deg, #6E93FF 0%, #A8BEFF 35%, #2E63FF 70%, #6E93FF 100%)',
       },
 
-      // ─────────────────────────────────────────────────
-      //  5. BOX SHADOW (elevation)
-      // ─────────────────────────────────────────────────
       boxShadow: {
-        'card': '0 2px 8px rgba(0, 0, 0, 0.3)',
-        'card-hover': '0 8px 30px rgba(0, 0, 0, 0.5)',
-        'button': '0 1px 3px rgba(0, 0, 0, 0.3)',
-        'button-hover': '0 4px 12px rgba(0, 0, 0, 0.4)',
-        'glow': '0 0 24px rgba(59, 130, 246, 0.12)',
-        'modal': '0 20px 60px rgba(0, 0, 0, 0.6)',
+        glow: '0 0 0 1px rgba(46,99,255,0.35), 0 8px 40px -8px rgba(46,99,255,0.45)',
+        'glow-lg': '0 0 0 1px rgba(46,99,255,0.4), 0 16px 70px -10px rgba(46,99,255,0.55)',
+        card: '0 1px 0 0 rgba(255,255,255,0.04) inset',
       },
 
-      // ─────────────────────────────────────────────────
-      //  6. BORDER RADIUS
-      // ─────────────────────────────────────────────────
-      borderRadius: {
-        xs: '0.125rem',  // 2px
-        sm: '0.25rem',   // 4px
-        DEFAULT: '0.5rem', // 8px
-        md: '0.75rem',   // 12px
-        lg: '1rem',      // 16px
-        xl: '1.5rem',    // 24px
-        full: '9999px',
-      },
-
-      // ─────────────────────────────────────────────────
-      //  7. SPACING SCALE
-      // ─────────────────────────────────────────────────
       spacing: {
-        'section': '6rem',     // 96px
-        'section-lg': '8rem',  // 128px
-        'section-xl': '10rem', // 160px
+        block: '2.5rem',
+        group: '6rem',
+        section: '7.5rem',
+        'section-lg': '11rem',
       },
 
-      // ─────────────────────────────────────────────────
-      //  8. MAX-WIDTH (containers)
-      // ─────────────────────────────────────────────────
       maxWidth: {
-        container: '72rem',     // 1152px
-        'container-sm': '48rem', // 768px
-        'container-xs': '36rem', // 576px (leitura)
+        container: '84rem',
+        prose: '34rem',
       },
 
-      // ─────────────────────────────────────────────────
-      //  9. Z-INDEX SCALE
-      // ─────────────────────────────────────────────────
       zIndex: {
+        atmos: '0',
         header: '50',
         overlay: '60',
-        modal: '70',
-        toast: '80',
+        cursor: '90',
+        progress: '95',
       },
 
-      // ─────────────────────────────────────────────────
-      // 10. TRANSITION
-      // ─────────────────────────────────────────────────
-      transitionDuration: {
-        fast: '0.15s',
-        DEFAULT: '0.3s',
-        slow: '0.5s',
-        'hero': '0.7s',
-      },
       transitionTimingFunction: {
         'out-expo': 'cubic-bezier(0.16, 1, 0.3, 1)',
         'out-quart': 'cubic-bezier(0.25, 1, 0.5, 1)',
-        'in-out-cubic': 'cubic-bezier(0.65, 0, 0.35, 1)',
       },
 
-      // ─────────────────────────────────────────────────
-      // 11. KEYFRAMES (para CSS animations pontuais)
-      // ─────────────────────────────────────────────────
+      transitionDuration: {
+        fast: '200ms',
+        base: '400ms',
+        slow: '700ms',
+      },
+
       keyframes: {
-        'fade-in': {
-          from: { opacity: '0' },
-          to: { opacity: '1' },
+        // Reveal palavra por palavra: desfoca e sobe.
+        // É o efeito que lê como "caro" — mais rico que fade puro.
+        'blur-in': {
+          from: { opacity: '0', filter: 'blur(14px)', transform: 'translateY(0.35em)' },
+          to: { opacity: '1', filter: 'blur(0)', transform: 'translateY(0)' },
+        },
+        'mask-up': {
+          from: { transform: 'translateY(105%)' },
+          to: { transform: 'translateY(0)' },
         },
         'fade-up': {
-          from: { opacity: '0', transform: 'translateY(20px)' },
+          from: { opacity: '0', transform: 'translateY(1rem)' },
           to: { opacity: '1', transform: 'translateY(0)' },
         },
-        'text-shimmer': {
-          '0%': { backgroundPosition: '0% 50%' },
-          '100%': { backgroundPosition: '200% 50%' },
+        'status-pulse': {
+          '0%, 100%': { opacity: '1', transform: 'scale(1)' },
+          '50%': { opacity: '0.4', transform: 'scale(0.85)' },
+        },
+        marquee: {
+          from: { transform: 'translateX(0)' },
+          to: { transform: 'translateX(-50%)' },
+        },
+        'sweep-x': {
+          from: { backgroundPosition: '0% 50%' },
+          to: { backgroundPosition: '200% 50%' },
         },
       },
+
       animation: {
-        'fade-in': 'fade-in 0.5s ease-out',
-        'fade-up': 'fade-up 0.5s ease-out',
-        'text-shimmer': 'text-shimmer 4s linear infinite',
+        'blur-in': 'blur-in 1s cubic-bezier(0.16, 1, 0.3, 1) both',
+        'mask-up': 'mask-up 900ms cubic-bezier(0.16, 1, 0.3, 1) both',
+        'fade-up': 'fade-up 700ms cubic-bezier(0.16, 1, 0.3, 1) both',
+        'status-pulse': 'status-pulse 2.4s ease-in-out infinite',
+        marquee: 'marquee 40s linear infinite',
+        'sweep-x': 'sweep-x 6s linear infinite',
       },
     },
   },
-  future: {
-    hoverOnlyWhenSupported: true,
-  },
-  plugins: [require('@tailwindcss/typography')],
+  future: { hoverOnlyWhenSupported: true },
+  plugins: [],
 };
 
 export default config;

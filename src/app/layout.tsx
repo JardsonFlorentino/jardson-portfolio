@@ -1,20 +1,13 @@
-import type { Metadata } from 'next';
 import '@/app/globals.css';
 
-export const metadata: Metadata = {
-  title: {
-    default: 'Jardson Florentino — Desenvolvedor Full-Stack',
-    template: '%s — Jardson Florentino',
-  },
-  description:
-    'Desenvolvedor Full-Stack que constrói sistemas completos que entregam resultado mensurável.',
-  metadataBase: new URL('https://jardsonflorentino.com'),
-};
-
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+/**
+ * Root layout.
+ * O <html> e o <body> vivem em [locale]/layout.tsx, porque só lá
+ * o idioma é conhecido. Aqui só entra o CSS global.
+ *
+ * A metadata também mora no layout de locale, via generateMetadata —
+ * ter metadata fixa em português aqui sobrescrevia a versão em inglês.
+ */
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return children;
 }

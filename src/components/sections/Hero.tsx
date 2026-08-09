@@ -1,177 +1,133 @@
-'use client';
-
-import { useCallback } from 'react';
-import { motion } from 'framer-motion';
-import { useLenis } from 'lenis/react';
-import { ArrowUpRight, Github, Linkedin, Mail } from 'lucide-react';
+import { ArrowDown, ArrowUpRight } from 'lucide-react';
 import { useTranslations } from 'next-intl';
-import Image from 'next/image';
 
-import { Button, ButtonLink } from '@/components/ui/Button';
-import { Container } from '@/components/ui/Container';
-import { Sparkles } from '@/components/sections/Sparkles';
-import { useReducedMotion } from '@/hooks/useReducedMotion';
-import { SITE, SOCIAL } from '@/lib/constants';
+import { Atmosphere } from '@/components/ui/Atmosphere';
+import { WordReveal } from '@/components/motion/WordReveal';
+import { MagneticLink } from '@/components/ui/MagneticLink';
+import { DotMatrix } from '@/components/hero/DotMatrix';
+import { HeroIndex } from '@/components/hero/HeroIndex';
+import { HeroShell } from '@/components/hero/HeroShell';
 
 /**
- * Hero — Cena de abertura do portfólio.
- * - Layout de 2 colunas: texto à esquerda, imagem à direita.
- * - Fundo atmosférico com aurora, grain e vignette.
- * - A imagem flutua sobre uma "aura" circular suave.
- * - Animações orquestradas para uma entrada elegante.
- * - Rodapé minimalista com prova social e links.
+ * Hero — Server Component. O texto todo vem no HTML inicial.
+ *
+ * ── Função declarada ─────────────────────────────────────────────
+ * Este hero NÃO prova nada. A prova vive nas seções abaixo.
+ * A função dele é uma só: fazer a pessoa querer descer.
+ *
+ * ── Composição ───────────────────────────────────────────────────
+ *   índice (3 col)  ·  headline + lede + CTAs (9 col)
+ *
+ * Duas correções que a primeira versão errou, validada só em mockup
+ * estreito e aplicada sem recalcular para 1536px:
+ *
+ * 1. O headline ocupa 9 colunas, não 7. Em 7 sobravam 708px e
+ *    "Do diagnóstico" em display-xl pedia ~730px — faltavam 22px, e o
+ *    resultado era quebra em 3 linhas com "Do" órfão numa linha só.
+ *
+ * 2. `items-start`, não `items-center`. Alinhando pelo centro, o índice
+ *    (curto) flutuava no meio do bloco de texto (alto), sem relação
+ *    com nada. Alinhado pelo topo, ele ancora no headline.
+ *
+ * ── O que saiu ───────────────────────────────────────────────────
+ *   métricas 6 / −65% — retiradas por ora (chaves de i18n preservadas)
+ *   TelemetryPanel  — painel de dados, dispensado
+ *   atmos-grid      — substituído pela matriz em canvas
  */
 export function Hero() {
   const t = useTranslations('hero');
-  const reducedMotion = useReducedMotion();
-  const lenis = useLenis();
-
-  const scrollTo = useCallback(
-    (target: string) => {
-      lenis?.scrollTo(target, {
-        offset: -80,
-        duration: 1.5,
-        easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      });
-    },
-    [lenis],
-  );
-
-  // Hierarquia de animação
-  const anim = {
-    bg: { delay: 0, duration: 1.2 },
-    image: { delay: 0.2, duration: 0.8 },
-    aura: { delay: 0.4, duration: 0.8 },
-    text: { stagger: 0.1, delay: 0.5 },
-    footer: { delay: 0.9, duration: 0.5 },
-  };
 
   return (
-    <section id="hero" className="relative flex min-h-dvh flex-col overflow-hidden">
-      {/* --- Efeitos de Fundo --- */}
-      <motion.div
-        className="pointer-events-none absolute inset-0"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1, transition: { duration: anim.bg.duration, delay: anim.bg.delay } }}
-      >
-        {!reducedMotion && <Sparkles />}
-        <div className="grain-overlay absolute inset-0 z-[1]" />
-        <div className="vignette-overlay absolute inset-0 z-[2]" />
-      </motion.div>
+    <HeroShell
+      scrollLabel={t('scroll')}
+      matrix={
+        <>
+          {/* withGrid=false: a matriz É a malha agora */}
+          <Atmosphere withGrid={false} />
+          <DotMatrix className="absolute inset-0 h-full w-full" />
+        </>
+      }
+      meta={
+        <div className="flex items-center gap-4">
+          <span className="meta-label shrink-0 text-accent-bright">{t('index')}</span>
+          <span className="rule-accent" />
+          <span className="hidden shrink-0 items-center gap-2.5 font-mono text-meta uppercase text-fg-muted sm:flex">
+            <span
+              className="inline-block size-1.5 shrink-0 rounded-full bg-accent-bright animate-status-pulse"
+              aria-hidden="true"
+            />
+            {t('availability')}
+          </span>
+        </div>
+      }
+      body={
+        <div className="grid grid-cols-12 items-start gap-x-8 gap-y-block">
+          <div className="col-span-12 lg:col-span-3 lg:pt-3">
+            <HeroIndex />
+          </div>
 
-      {/* --- Conteúdo Principal --- */}
-      <Container className="relative z-10 flex flex-1 flex-col justify-end pt-24 pb-0 md:pt-32">
-        <div className="grid grid-cols-1 items-start gap-12 md:grid-cols-2 md:items-center md:gap-8">
-          {/* --- Esquerda: Conteúdo de Texto --- */}
-          <motion.div
-            className="order-2 flex flex-col items-start md:order-1"
-            initial="hidden"
-            animate="visible"
-            transition={{ staggerChildren: anim.text.stagger, delayChildren: anim.text.delay }}
-          >
-            <motion.p
-              className="font-display text-lg font-semibold tracking-tight text-foreground"
-              variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}
-            >
-              {t('role')}
-            </motion.p>
-            <motion.h1
-              className="mt-2 font-display text-4xl/[1.1] font-bold tracking-tighter text-foreground md:text-5xl/[1.1]"
-              variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}
-            >
-              {t('headline_l1')}
-              <br />
-              {t('headline_l2')} <span className="text-accent">{t('headline_l3')}</span>
-            </motion.h1>
-            <motion.p
-              className="mt-4 max-w-md text-body leading-relaxed text-muted"
-              variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}
-            >
-              {t('subheadline')}
-            </motion.p>
-            <motion.div
-              className="mt-8 flex flex-wrap gap-4"
-              variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}
-            >
-              <Button size="md" onClick={() => scrollTo('#projects')}>
-                {t('cta_projects')}
-                <ArrowUpRight size={16} className="-mr-1" />
-              </Button>
-              <Button variant="secondary" size="md" onClick={() => scrollTo('#contact')}>
-                {t('cta_contact')}
-              </Button>
-            </motion.div>
-
-            {/* --- Prova Social e Links --- */}
-            <motion.div
-              className="mt-16 w-full"
-              variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}
-            >
-              {/* Stats Blocks */}
-              <div className="flex items-start gap-8 border-t border-border/60 pt-6">
-                <div className="flex flex-col">
-                  <span className="font-display text-2xl font-semibold text-foreground">
-                    {t('stat_projects_value')}
-                  </span>
-                  <span className="mt-1 text-xs uppercase tracking-widest text-muted/80">
-                    {t('stat_projects_label')}
-                  </span>
-                </div>
-                <div className="h-12 w-px bg-border/60" />
-                <div className="flex flex-col">
-                  <span className="font-display text-xl font-semibold text-foreground">
-                    {t('stat_stack_value')}
-                  </span>
-                  <span className="mt-1 text-xs uppercase tracking-widest text-muted/80">
-                    {t('stat_stack_label')}
-                  </span>
-                </div>
-              </div>
-
-              {/* Social Links */}
-              <div className="mt-6 flex items-center gap-6">
-                <ButtonLink href={`mailto:${SITE.email}`} variant="ghost" size="sm" className="group h-auto p-0 text-sm text-muted/80 hover:text-foreground"><Mail size={16} /><span className="ml-2 transition-colors group-hover:text-foreground">{t('social_email')}</span></ButtonLink>
-                <ButtonLink href={SOCIAL.github} variant="ghost" size="sm" className="group h-auto p-0 text-sm text-muted/80 hover:text-foreground"><Github size={16} /><span className="ml-2 transition-colors group-hover:text-foreground">{t('social_github')}</span></ButtonLink>
-                <ButtonLink href={SOCIAL.linkedin} variant="ghost" size="sm" className="group h-auto p-0 text-sm text-muted/80 hover:text-foreground"><Linkedin size={16} /><span className="ml-2 transition-colors group-hover:text-foreground">{t('social_linkedin')}</span></ButtonLink>
-              </div>
-            </motion.div>
-          </motion.div>
-
-          {/* --- Direita: Imagem --- */}
-          <div className="order-1 flex h-full min-h-[300px] w-full items-end justify-center md:order-2 md:min-h-[550px]">
-            <div className="relative h-full w-full max-w-sm md:max-w-none">
-              <motion.div
-                className="absolute inset-0 m-auto h-[80%] w-[80%] rounded-full bg-accent/10 blur-2xl"
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{
-                  opacity: 1,
-                  scale: 1,
-                  transition: { delay: anim.aura.delay, duration: anim.aura.duration, ease: 'easeOut' },
-                }}
-              />
-              <motion.div
-                className="relative h-full w-full"
-                initial={{ opacity: 0, scale: 1.05 }}
-                animate={{
-                  opacity: 1,
-                  scale: 1,
-                  transition: { delay: anim.image.delay, duration: anim.image.duration, ease: 'easeOut' },
-                }}
-              >
-                <Image
-                  src="/images/hero-photo.webp"
-                  alt="Jardson Florentino — Full-Stack Developer"
-                  fill
-                  className="object-contain object-center"
-                  quality={95}
-                  priority
-                  sizes="(max-width: 768px) 80vw, 40vw"
+          <div className="col-span-12 lg:col-span-9">
+            <h1 className="font-display text-display-xl text-fg">
+              <span className="block">
+                <WordReveal
+                  text={t('headline_l1')}
+                  delay={100}
+                  stagger={80}
+                  highlight={[t('headline_highlight')]}
                 />
-              </motion.div>
+              </span>
+              <span className="block">
+                <WordReveal text={t('headline_l2')} delay={250} stagger={80} />
+              </span>
+            </h1>
+
+            <div
+              className="mt-8 animate-fade-up"
+              style={{ animationDelay: '560ms' }}
+            >
+              <span className="rule mb-5 block max-w-24" />
+              <p className="max-w-prose text-lede text-fg-muted">{t('lede')}</p>
+
+              <div className="mt-7 flex flex-wrap items-center gap-4">
+                <MagneticLink
+                  href="#projects"
+                  className="group h-12 rounded-full bg-accent px-7 text-sm font-medium text-white shadow-glow transition-shadow duration-base hover:shadow-glow-lg"
+                >
+                  {t('cta_projects')}
+                  <ArrowDown
+                    size={15}
+                    strokeWidth={2}
+                    className="transition-transform duration-fast group-hover:translate-y-0.5"
+                    aria-hidden="true"
+                  />
+                </MagneticLink>
+                <MagneticLink
+                  href="#contact"
+                  strength={6}
+                  className="group h-12 rounded-full border border-line-strong px-7 text-sm text-fg-muted transition-colors duration-fast hover:border-accent/50 hover:text-fg"
+                >
+                  {t('cta_contact')}
+                  <ArrowUpRight
+                    size={15}
+                    strokeWidth={2}
+                    className="transition-transform duration-fast group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+                    aria-hidden="true"
+                  />
+                </MagneticLink>
+              </div>
+
+              {/* Índice em faixa horizontal — só abaixo de lg.
+                  No desktop ele vive na coluna da esquerda; no mobile
+                  aquela coluna não existe, e sem esta faixa o convite a
+                  explorar desaparecia justamente no aparelho onde a
+                  maioria abre o site. */}
+              <div className="mt-block">
+                <HeroIndex variant="row" />
+              </div>
             </div>
           </div>
         </div>
-      </Container>
-    </section>
+      }
+    />
   );
 }

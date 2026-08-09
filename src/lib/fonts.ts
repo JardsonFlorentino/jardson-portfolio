@@ -1,44 +1,54 @@
-import { Inter } from 'next/font/google';
+import { Inter, JetBrains_Mono } from 'next/font/google';
 import localFont from 'next/font/local';
 
 /**
- * Inter — body font (Google Fonts)
- * Weights: 400 (regular), 500 (medium), 600 (semibold)
+ * Corpo — Inter.
+ * Neutra e correta. Só os pesos usados.
  */
 export const inter = Inter({
   subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
+  weight: ['400', '500'],
   variable: '--font-inter',
   display: 'swap',
   preload: true,
 });
 
 /**
- * Cabinet Grotesk — display font (local, from Fontshare)
- * Weights: 700 (bold), 800 (extrabold), 900 (black)
- * Files must be placed in public/fonts/
- *
- * Download: https://www.fontshare.com/fonts/cabinet-grotesk
+ * Metadados — JetBrains Mono.
+ * Status, numeração de seção, stack, labels.
+ * É o que dá o sotaque de "sistema" ao invés de "folheto".
  */
-export const cabinetGrotesk = localFont({
+export const mono = JetBrains_Mono({
+  subsets: ['latin'],
+  weight: ['400', '500'],
+  variable: '--font-mono',
+  display: 'swap',
+  preload: true,
+});
+
+/**
+ * Display — Switzer (Fontshare, licença gratuita).
+ *
+ * ⚠️ REQUER DOWNLOAD MANUAL. O arquivo precisa existir antes do build:
+ *    public/fonts/Switzer-Variable.woff2
+ *
+ * Download: https://www.fontshare.com/fonts/switzer
+ * Instruções completas em docs-ai/DIRECAO_CRIATIVA_V2.md
+ *
+ * Usamos o arquivo VARIÁVEL: um único request cobre 100–900,
+ * o que sai mais leve que baixar Medium + Bold separados.
+ */
+export const switzer = localFont({
   src: [
     {
-      path: '../../public/fonts/CabinetGrotesk-Bold.woff2',
-      weight: '700',
-      style: 'normal',
-    },
-    {
-      path: '../../public/fonts/CabinetGrotesk-Extrabold.woff2',
-      weight: '800',
-      style: 'normal',
-    },
-    {
-      path: '../../public/fonts/CabinetGrotesk-Black.woff2',
-      weight: '900',
+      path: '../../public/fonts/Switzer-Variable.woff2',
+      weight: '100 900',
       style: 'normal',
     },
   ],
-  variable: '--font-cabinet-grotesk',
+  variable: '--font-switzer',
   display: 'swap',
   preload: true,
+  // Ajuste de fallback para reduzir o salto visual antes da fonte carregar
+  fallback: ['system-ui', 'sans-serif'],
 });

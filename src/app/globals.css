@@ -3,70 +3,252 @@
 @tailwind utilities;
 
 /* ───────────────────────────────────────────────
- *  BASE LAYER
+ *  BASE
  * ─────────────────────────────────────────────── */
 @layer base {
   html {
-    scroll-behavior: auto; /* Lenis handles smooth scrolling */
+    scroll-behavior: auto;
+    -webkit-tap-highlight-color: transparent;
   }
 
   body {
-    @apply bg-background text-foreground antialiased;
+    @apply bg-bg text-fg antialiased;
     font-family: var(--font-inter), system-ui, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-  }
-
-  /* Improve text rendering on dark backgrounds */
-  body {
     text-rendering: optimizeLegibility;
   }
 
-  /* Selection */
   ::selection {
-    @apply bg-accent/20 text-foreground;
+    background: theme('colors.accent.DEFAULT');
+    color: #fff;
   }
 
-  /* Focus visible — acessível mas discreto */
   *:focus-visible {
-    @apply outline-2 outline-offset-2 outline-accent outline-dashed;
+    outline: 2px solid theme('colors.accent.bright');
+    outline-offset: 3px;
+    border-radius: 2px;
   }
 
-  /* Remover outline para interações com mouse */
   *:focus:not(:focus-visible) {
     outline: none;
   }
 }
 
 /* ───────────────────────────────────────────────
- *  COMPONENTS LAYER — padrões reutilizáveis
+ *  ATMOSFERA
+ *  Tudo aqui é CSS estático — zero JS, zero animação
+ *  contínua. É o que dá profundidade sem custar frame.
  * ─────────────────────────────────────────────── */
 @layer components {
-  /* Underline animado para links inline */
+  /* Grid blueprint — hairlines azuis que somem nas bordas.
+     Combina com o conceito "sistemas" e dá textura ao preto liso. */
+  .atmos-grid {
+    background-image:
+      linear-gradient(to right, rgba(46, 99, 255, 0.07) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(46, 99, 255, 0.07) 1px, transparent 1px);
+    background-size: 72px 72px;
+    -webkit-mask-image: radial-gradient(ellipse 75% 60% at 30% 20%, #000 20%, transparent 75%);
+    mask-image: radial-gradient(ellipse 75% 60% at 30% 20%, #000 20%, transparent 75%);
+  }
+
+  /* Fonte de luz azul. Um gradiente radial estático — o efeito visual
+     de uma aurora sem o custo de animar blur(100px) em loop. */
+  .atmos-light {
+    background:
+      radial-gradient(ellipse 60% 50% at 18% 8%, rgba(46, 99, 255, 0.22), transparent 70%),
+      radial-gradient(ellipse 45% 40% at 88% 92%, rgba(110, 147, 255, 0.1), transparent 70%);
+  }
+
+  .atmos-vignette {
+    background: radial-gradient(ellipse 90% 80% at 50% 45%, transparent 45%, rgba(0, 0, 0, 0.7) 100%);
+  }
+
+  .atmos-grain {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+    background-size: 180px 180px;
+    opacity: 0.055;
+  }
+
+  /* Luz que segue o cursor. A posição vem de --mx/--my, atualizadas
+     em requestAnimationFrame — nunca via estado do React. */
+  .cursor-glow {
+    background: radial-gradient(
+      420px circle at var(--mx, 50%) var(--my, 50%),
+      rgba(46, 99, 255, 0.1),
+      transparent 65%
+    );
+  }
+
+  /* Retrato: máscara radial que segue o cursor e devolve a cor original.
+     A posição vem de --px/--py, escritas em rAF pelo PortraitReveal.
+     A borda suave (do 55% ao 100%) evita o círculo de recorte duro. */
+  .portrait-reveal {
+    --px: 50%;
+    --py: 40%;
+    --rv: 170px;
+    -webkit-mask-image: radial-gradient(
+      circle var(--rv) at var(--px) var(--py),
+      #000 0%,
+      #000 52%,
+      transparent 100%
+    );
+    mask-image: radial-gradient(
+      circle var(--rv) at var(--px) var(--py),
+      #000 0%,
+      #000 52%,
+      transparent 100%
+    );
+  }
+
+  /* ── Reveal ─────────────────────────────────── */
+  .mask-line {
+    @apply block overflow-hidden;
+    margin-block: -0.12em;
+  }
+  .mask-line > * {
+    @apply block will-change-transform;
+    padding-block: 0.12em;
+  }
+
+  /* ── Tipografia de realce ───────────────────── */
+  /* Realce em gradiente azul.
+     bg-clip-text recorta o texto na caixa do elemento — com line-height 0.88
+     isso decapitava o "g" de diagnóstico. O padding dá folga ao glifo e a
+     margem negativa devolve o espaço ao layout. */
+  .text-sweep {
+    @apply bg-accent-sweep bg-clip-text text-transparent;
+    background-size: 200% 100%;
+    /* motion-reduce: a varredura para, o gradiente permanece */
+    @apply animate-sweep-x motion-reduce:animate-none;
+    padding-bottom: 0.16em;
+    margin-bottom: -0.16em;
+  }
+
+  .meta-label {
+    @apply font-mono text-meta uppercase text-fg-dim;
+  }
+
+  .rule {
+    @apply h-px w-full bg-line;
+  }
+
+  .rule-accent {
+    background: linear-gradient(
+      to right,
+      theme('colors.accent.DEFAULT') 0%,
+      theme('colors.line.DEFAULT') 35%,
+      theme('colors.line.DEFAULT') 100%
+    );
+    @apply h-px w-full;
+  }
+
   .link-underline {
     @apply relative inline-block;
   }
   .link-underline::after {
     content: '';
-    @apply absolute bottom-0 left-0 h-px w-0 bg-foreground transition-all duration-300;
+    @apply absolute -bottom-0.5 left-0 h-px w-0 bg-current transition-[width] duration-fast ease-out-quart;
   }
   .link-underline:hover::after {
     @apply w-full;
   }
 
-  /* Glass card */
-  .glass {
-    @apply border border-border bg-glass backdrop-blur-xl;
+  /* ── Barra de progresso de scroll ────────────
+     CSS puro via scroll-driven animation. Onde o browser não
+     suporta (Firefox/Safari antigos), simplesmente não aparece.
+     Zero JavaScript. */
+  .scroll-progress {
+    transform-origin: 0 50%;
+    scale: 0 1;
+  }
+  @supports (animation-timeline: scroll()) {
+    .scroll-progress {
+      animation: scroll-grow linear;
+      animation-timeline: scroll(root block);
+    }
+    @keyframes scroll-grow {
+      from {
+        scale: 0 1;
+      }
+      to {
+        scale: 1 1;
+      }
+    }
   }
 
-  /* Text gradient (accent) */
-  .text-gradient {
-    @apply bg-gradient-to-r from-accent to-accent-light bg-clip-text text-transparent;
+  /* ── Botão flutuante: pulso + ondas ───────────
+     Isto vive aqui, e não em tailwind.config.ts, por dois motivos
+     concretos que já custaram um ciclo:
+
+     1. O `animation` shorthand que o Tailwind emite em `animate-*`
+        RESETA `animation-delay`. A defasagem entre os anéis passava a
+        depender da ordem em que o JIT emitia as classes — instável.
+     2. Mudança em globals.css recarrega na hora. Mudança em
+        tailwind.config.ts exige reiniciar o dev server, e neste
+        projeto o cache do .next já provou não perceber.
+
+     Só `transform` e `opacity`: tudo roda no compositor, zero layout. */
+  .fab-wave {
+    /* 1.5px, não 1px: em tela 2x o 1px vira 0.8px de device pixel e a
+       onda quase desaparece antes de crescer. */
+    @apply pointer-events-none absolute inset-0 rounded-full border-[1.5px] border-accent-bright/70;
+    /* `linear`, e não a out-expo do resto do site: com out-expo o anel
+       salta a 2x nos primeiros 25% e depois rasteja até 2.4 — as três
+       ondas ficavam empilhadas na borda externa e o momento de "sair do
+       botão" era um piscar. Onda que se propaga anda em velocidade
+       constante; é o que faz o olho ler propagação em vez de um flash. */
+    animation: fab-wave 2.8s linear infinite;
+  }
+  /* Declarados DEPOIS de .fab-wave: aqui a ordem é minha, não do JIT. */
+  .fab-wave-2 {
+    animation-delay: 0.93s;
+  }
+  .fab-wave-3 {
+    animation-delay: 1.86s;
   }
 
-  /* Focus ring padronizado */
-  .focus-ring {
-    @apply focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent;
+  /* O pulso: um halo que respira. Fica no halo e não no botão para
+     não disputar o `transform` com o scale do hover. */
+  .fab-halo {
+    @apply pointer-events-none absolute inset-0 rounded-full bg-accent;
+    animation: fab-breathe 2.8s ease-in-out infinite;
+  }
+
+  @keyframes fab-wave {
+    /* A onda NASCE transparente e ganha corpo nos primeiros 15%.
+       Começar em 0.7 fazia o anel aparecer do nada já cheio, colado na
+       borda do botão. Assim ele emerge. */
+    0% {
+      transform: scale(1);
+      opacity: 0;
+    }
+    15% {
+      opacity: 0.7;
+    }
+    100% {
+      transform: scale(2.4);
+      opacity: 0;
+    }
+  }
+
+  @keyframes fab-breathe {
+    0%,
+    100% {
+      transform: scale(1);
+      opacity: 0.32;
+    }
+    50% {
+      transform: scale(1.5);
+      opacity: 0.04;
+    }
+  }
+
+  /* ── Ticker ─────────────────────────────────── */
+  .ticker-mask {
+    -webkit-mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent);
+    mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent);
   }
 }
 
@@ -81,55 +263,62 @@
   .scrollbar-hide::-webkit-scrollbar {
     display: none;
   }
+
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
 }
 
 /* ───────────────────────────────────────────────
- *  LENIS (smooth scroll)
+ *  LENIS
  * ─────────────────────────────────────────────── */
 html.lenis {
   height: auto;
 }
-
 .lenis.lenis-smooth {
   scroll-behavior: auto;
 }
-
 .lenis.lenis-smooth [data-lenis-prevent] {
   overscroll-behavior: contain;
 }
-
 .lenis.lenis-stopped {
   overflow: hidden;
 }
-
 .lenis.lenis-smooth iframe {
-  pointer-events: none;
-}
-
-/* ───────────────────────────────────────────────
- *  GRAIN — textura de filme (SVG noise)
- * ─────────────────────────────────────────────── */
-.grain-overlay {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  background-repeat: repeat;
-  background-size: 200px 200px;
-  opacity: 0.035;
-  pointer-events: none;
-}
-
-/* ───────────────────────────────────────────────
- *  VIGNETTE — vinheta para foco central
- * ─────────────────────────────────────────────── */
-.vignette-overlay {
-  background: radial-gradient(
-    ellipse 70% 65% at 50% 50%,
-    transparent 40%,
-    rgba(0, 0, 0, 0.35) 100%
-  );
   pointer-events: none;
 }
 
 /* ───────────────────────────────────────────────
  *  REDUCED MOTION
  * ─────────────────────────────────────────────── */
-/* Animações são controladas via JS com useReducedMotion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .mask-line > * {
+    transform: none !important;
+  }
+
+  /* O reveal precisa terminar legível, não desfocado */
+  .animate-blur-in {
+    opacity: 1 !important;
+    filter: none !important;
+    transform: none !important;
+  }
+
+  .cursor-glow {
+    display: none;
+  }
+
+  /* Ondas e pulso somem inteiros — não param congelados no meio */
+  .fab-wave,
+  .fab-halo {
+    display: none;
+  }
+}

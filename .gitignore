@@ -5,6 +5,12 @@ node_modules/
 .next/
 
 # ──────────────────────────────────────────────
+# Artefatos de build
+# ──────────────────────────────────────────────
+tsconfig.tsbuildinfo
+next-env.d.ts
+
+# ──────────────────────────────────────────────
 # Ambiente
 # ──────────────────────────────────────────────
 .env
@@ -36,5 +42,7 @@ Thumbs.db
 # remova ou comente a linha correspondente.
 /CLAUDE.md
 /CLAUDE.local.md
-/docs-ai/
+#/docs-ai/
 /.claude/
+
+/docs-ai
