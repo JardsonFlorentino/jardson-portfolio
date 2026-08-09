@@ -51,19 +51,34 @@ export function About() {
               <p className="mt-block max-w-prose text-lede text-fg-muted">{t('lede')}</p>
             </SlideUp>
 
-            {/* Diferencial: automação */}
+            {/* Dois blocos com pesos diferentes de propósito.
+                Dois blocos idênticos empilhados leem como lista; o que
+                cria hierarquia é um ser mais alto que o outro.
+
+                1. Diferencial (automação) — barra azul, o elemento mais
+                   alto da seção. É a afirmação que sustenta a métrica.
+                2. Origem — cartão em surface, mais quieto. Contexto que
+                   dá lastro à afirmação de cima sem competir com ela. */}
             <SlideUp distance={20}>
-              <div className="border-l-2 border-accent pl-6">
-                <p className="meta-label text-accent-bright">{t('edge_label')}</p>
-                <p className="mt-3 max-w-prose text-body text-fg">{t('edge_body')}</p>
+              <div className="flex flex-col gap-8">
+                <div className="border-l-2 border-accent pl-6">
+                  <p className="meta-label text-accent-bright">{t('edge_label')}</p>
+                  <p className="mt-3 max-w-prose text-body text-fg">{t('edge_body')}</p>
+                </div>
+
+                <div className="rounded-2xl border border-line bg-surface/60 p-6 shadow-card">
+                  <p className="meta-label">{t('origin_label')}</p>
+                  <p className="mt-3 max-w-prose text-body text-fg-muted">{t('origin_body')}</p>
+                </div>
               </div>
             </SlideUp>
 
             <SlideUp distance={20}>
-              <dl className="grid grid-cols-2 gap-x-8 gap-y-6 border-t border-line pt-block sm:grid-cols-3">
+              <dl className="grid grid-cols-2 gap-x-8 gap-y-6 border-t border-line pt-block lg:grid-cols-4">
                 {[
                   { k: t('fact_base_label'), v: SITE.location },
                   { k: t('fact_role_label'), v: t('fact_role_value') },
+                  { k: t('fact_edu_label'), v: t('fact_edu_value') },
                   { k: t('fact_langs_label'), v: t('fact_langs_value') },
                 ].map((f) => (
                   <div key={f.k} className="flex flex-col gap-1.5">
