@@ -334,7 +334,7 @@ Desenvolvedor Full-Stack · Maragogi — AL, Brasil
 - 💼 [LinkedIn](https://www.linkedin.com/in/jardsonflorentino/)
 - 🐙 [GitHub](https://github.com/JardsonFlorentino)
 - 📸 [Instagram](https://www.instagram.com/jardson_dev/)
-- 💬 [WhatsApp](https://wa.me/5581993447339)
+- 💬 [WhatsApp](https://wa.me/5582993447339)
 - 📧 [jardsonflorentino@gmail.com](mailto:jardsonflorentino@gmail.com)
 
 Resposta em até 24 horas.
