@@ -19,7 +19,7 @@ export const SOCIAL = {
   github: 'https://github.com/JardsonFlorentino',
   linkedin: 'https://www.linkedin.com/in/jardsonflorentino/',
   instagram: 'https://www.instagram.com/jardson_dev/',
-  whatsapp: 'https://wa.me/5581986438384',
+  whatsapp: 'https://wa.me/5581993447339',
 } as const;
 
 /** Handles públicos — usados como rótulo secundário nos canais de contato. */
