@@ -49,6 +49,7 @@
     "link_linkedin": "LinkedIn",
     "junior-jets_desc": "Marine services management ecosystem: work order flow, digital approval via unique link, and automated WhatsApp notifications.",
     "junior-jets_metric": "reduction in operational time",
+    "calculadora-alimentos_desc": "Clinical platform for nutritionists and patients with proportional food substitution and household measurements. It unifies more than 15,000 items from four official tables, with sub-80ms search, native barcode scanning and an installable offline PWA experience.",
     "devburger_desc": "Full ordering application for a burger restaurant: catalogue, cart, checkout and tracking panel. Order state is validated on the server, not on the screen — the interface may go stale, the order must never reach an impossible state.",
     "controleja_desc": "Personal finance dashboard with its own JWT authentication. The owner filter lives in the query, not in the interface: a UI bug can never expose someone else’s entries.",
     "meu-caribe_desc": "Institutional site for a tourism business in Maragogi, Brazil.",

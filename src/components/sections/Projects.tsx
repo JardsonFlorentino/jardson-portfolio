@@ -10,7 +10,8 @@ import { CLIENT_WORK, CONTEST, SYSTEMS } from '@/data/projects';
  * Projects — Server Component (SlideUp é o único wrapper client).
  *
  * TRÊS faixas, uma hierarquia:
- *   02 Sistemas   → cards. Junior Jets em largura total + 2 médios.
+ *   02 Sistemas   → cards. Junior Jets e Calculadora Nutricional em largura total
+ *                    + os demais em cards médios.
  *   03 Concurso   → lista tipográfica. Rótulo próprio, peso de lista.
  *   04 Cliente    → lista tipográfica.
  *
@@ -24,7 +25,8 @@ import { CLIENT_WORK, CONTEST, SYSTEMS } from '@/data/projects';
  */
 export function Projects() {
   const t = useTranslations('projects');
-  const [featured, ...rest] = SYSTEMS;
+  const featuredProjects = SYSTEMS.slice(0, 2);
+  const secondaryProjects = SYSTEMS.slice(2);
 
   return (
     // Padding no topo próprio: a dobradiça que antes entregava esse
@@ -45,11 +47,13 @@ export function Projects() {
         </SlideUp>
 
         <div className="mt-group grid grid-cols-1 gap-6 md:grid-cols-2">
-          <SlideUp className="md:col-span-2" distance={24}>
-            <ProjectCard project={featured} featured />
-          </SlideUp>
-          {rest.map((project, i) => (
-            <SlideUp key={project.id} delay={0.08 * (i + 1)} distance={24}>
+          {featuredProjects.map((project, i) => (
+            <SlideUp key={project.id} className="md:col-span-2" delay={0.08 * i} distance={24}>
+              <ProjectCard project={project} featured />
+            </SlideUp>
+          ))}
+          {secondaryProjects.map((project, i) => (
+            <SlideUp key={project.id} delay={0.08 * (i + 2)} distance={24}>
               <ProjectCard project={project} />
             </SlideUp>
           ))}

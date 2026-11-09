@@ -84,36 +84,30 @@ export default async function LocaleLayout({
   };
 
   return (
-    <html
-      lang={locale}
-      className={`${inter.variable} ${switzer.variable} ${mono.variable}`}
-      suppressHydrationWarning
-    >
-      <body className="min-h-dvh bg-bg font-sans text-fg antialiased">
-        <script
-          type="application/ld+json"
-          // eslint-disable-next-line react/no-danger
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-        />
-        <NextIntlClientProvider messages={messages}>
-          <SmoothScroll>
-            {/* Skip link — primeiro foco tabulável da página.
-                Invisível até receber foco pelo teclado. */}
-            <a
-              href="#main"
-              className="sr-only focus-visible:not-sr-only focus-visible:fixed focus-visible:left-4 focus-visible:top-4 focus-visible:z-progress focus-visible:rounded-full focus-visible:bg-accent focus-visible:px-5 focus-visible:py-3 focus-visible:text-sm focus-visible:font-medium focus-visible:text-white"
-            >
-              {tNav('skip')}
-            </a>
-            <ScrollProgress />
-            <CursorGlow />
-            <Header />
-            <main id="main">{children}</main>
-            <Footer />
-            <WhatsAppFab />
-          </SmoothScroll>
-        </NextIntlClientProvider>
-      </body>
-    </html>
+    <div className={`${inter.variable} ${switzer.variable} ${mono.variable}`}>
+      <script
+        type="application/ld+json"
+        // eslint-disable-next-line react/no-danger
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <NextIntlClientProvider messages={messages}>
+        <SmoothScroll>
+          {/* Skip link — primeiro foco tabulável da página.
+              Invisível até receber foco pelo teclado. */}
+          <a
+            href="#main"
+            className="sr-only focus-visible:not-sr-only focus-visible:fixed focus-visible:left-4 focus-visible:top-4 focus-visible:z-progress focus-visible:rounded-full focus-visible:bg-accent focus-visible:px-5 focus-visible:py-3 focus-visible:text-sm focus-visible:font-medium focus-visible:text-white"
+          >
+            {tNav('skip')}
+          </a>
+          <ScrollProgress />
+          <CursorGlow />
+          <Header />
+          <main id="main">{children}</main>
+          <Footer />
+          <WhatsAppFab />
+        </SmoothScroll>
+      </NextIntlClientProvider>
+    </div>
   );
 }

@@ -26,10 +26,11 @@ export function ProjectCard({ project, featured = false }: ProjectCardProps) {
   const t = useTranslations('projects');
   const locale = useLocale();
   const primary = project.links[0];
-  const isInternal = primary.href.startsWith('/');
+  const href = project.caseStudyPdf ?? primary.href;
+  const isInternal = href.startsWith('/') && !href.startsWith('/docs/');
   // Rotas internas precisam do prefixo de locale — o middleware usa
   // localePrefix: 'always', então /projetos/x sem locale dá 404.
-  const href = isInternal ? `/${locale}${primary.href}` : primary.href;
+  const cardHref = isInternal ? `/${locale}${href}` : href;
 
   const StatusBadge = ({ inline = false }: { inline?: boolean }) => (
     <div
@@ -146,17 +147,13 @@ export function ProjectCard({ project, featured = false }: ProjectCardProps) {
 
   const wrapperClass = cn('block h-full focus-visible:outline-offset-4', featured && 'col-span-full');
 
-  if (isInternal) {
-    return (
-      <Link href={href} className={wrapperClass} aria-label={project.name}>
-        {Card}
-      </Link>
-    );
-  }
-
-  return (
+  const CardLink = isInternal ? (
+    <Link href={cardHref} className={wrapperClass} aria-label={project.name}>
+      {Card}
+    </Link>
+  ) : (
     <a
-      href={href}
+      href={cardHref}
       target="_blank"
       rel="noopener noreferrer"
       className={wrapperClass}
@@ -165,4 +162,6 @@ export function ProjectCard({ project, featured = false }: ProjectCardProps) {
       {Card}
     </a>
   );
+
+  return CardLink;
 }

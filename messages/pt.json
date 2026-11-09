@@ -49,6 +49,7 @@
     "link_linkedin": "LinkedIn",
     "junior-jets_desc": "Ecossistema de gestão náutica: fluxo de ordens de serviço, aprovação digital por link exclusivo e notificações automáticas via WhatsApp.",
     "junior-jets_metric": "de redução no tempo operacional",
+    "calculadora-alimentos_desc": "Plataforma clínica para nutricionistas e pacientes com substituição proporcional de alimentos e medidas caseiras. Unifica mais de 15.000 itens de quatro tabelas oficiais, com busca abaixo de 80ms, leitor de código de barras nativo e experiência PWA instalável offline.",
     "devburger_desc": "Aplicação completa de pedidos para hamburgueria: catálogo, carrinho, checkout e painel de acompanhamento. O estado do pedido é validado no servidor, não na tela — a interface pode ficar desatualizada, o pedido não pode entrar num estado impossível.",
     "controleja_desc": "Dashboard de controle financeiro pessoal com autenticação própria por JWT. O filtro por proprietário vive na consulta, não na interface: bug de tela nunca expõe lançamento de outra pessoa.",
     "meu-caribe_desc": "Site institucional para estabelecimento de turismo em Maragogi.",

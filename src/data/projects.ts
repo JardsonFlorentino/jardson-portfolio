@@ -28,6 +28,8 @@ export interface Project {
   stack: string[];
   /** Opcional: sem imagem o card cai num layout tipográfico (ver ProjectCard) */
   image?: string;
+  /** Link opcional para um case study em PDF */
+  caseStudyPdf?: string;
   links: ProjectLink[];
   /** true = tem página de case study própria */
   hasCaseStudy: boolean;
@@ -43,16 +45,43 @@ export const SYSTEMS: Project[] = [
     tier: 'system',
     status: 'production',
     year: 2025,
-    name: 'Junior Jets',
+    name: "Junior Jet's Náutica",
     metric: { value: '65%', labelKey: 'junior-jets_metric' },
     stack: ['React', 'TypeScript', 'Node.js', 'Prisma', 'PostgreSQL', 'Tailwind', 'WhatsApp API'],
     image: '/images/projects/junior-jets.webp',
+    caseStudyPdf: '/docs/junior-jets-nautica-case-study.pdf',
     links: [
+      {
+        label: 'case_pdf',
+        href: '/docs/junior-jets-nautica-case-study.pdf',
+      },
       {
         label: 'linkedin',
         href: 'https://www.linkedin.com/posts/jardsonflorentino_case-study-sistema-de-gest%C3%A3o-n%C3%A1utica-full-stack-activity-7421729978871894016-JvKc',
       },
     ],
+    hasCaseStudy: false,
+  },
+  {
+    id: 'calculadora-alimentos',
+    tier: 'system',
+    status: 'production',
+    year: 2026,
+    name: 'Calculadora Nutricional',
+    stack: [
+      'Next.js',
+      'React',
+      'TypeScript',
+      'Node.js',
+      'Prisma',
+      'PostgreSQL',
+      'Tailwind CSS',
+      'PWA',
+      'Docker',
+    ],
+    image: '/images/projects/calculadora-alimentos.png',
+    caseStudyPdf: '/docs/calculadora-alimentos-case-study.pdf',
+    links: [{ label: 'case_pdf', href: '/docs/calculadora-alimentos-case-study.pdf' }],
     hasCaseStudy: false,
   },
   {
