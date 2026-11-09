@@ -28,6 +28,10 @@ export interface Project {
   stack: string[];
   /** Opcional: sem imagem o card cai num layout tipográfico (ver ProjectCard) */
   image?: string;
+  /** Ajuste de enquadramento para imagens que não devem ser cortadas */
+  imageFit?: 'cover' | 'contain';
+  /** Reduz a altura da imagem quando o card ocupa toda a largura */
+  featuredImageSize?: 'default' | 'compact';
   /** Link opcional para um case study em PDF */
   caseStudyPdf?: string;
   links: ProjectLink[];
@@ -80,6 +84,8 @@ export const SYSTEMS: Project[] = [
       'Docker',
     ],
     image: '/images/projects/calculadora-alimentos.png',
+    imageFit: 'contain',
+    featuredImageSize: 'compact',
     caseStudyPdf: '/docs/calculadora-alimentos-case-study.pdf',
     links: [{ label: 'case_pdf', href: '/docs/calculadora-alimentos-case-study.pdf' }],
     hasCaseStudy: false,

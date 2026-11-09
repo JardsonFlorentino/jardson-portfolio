@@ -77,7 +77,11 @@ export function ProjectCard({ project, featured = false }: ProjectCardProps) {
         <div
           className={cn(
             'relative w-full overflow-hidden bg-surface-raised',
-            featured ? 'aspect-[16/9] md:aspect-[21/9]' : 'aspect-[16/10]',
+            featured
+              ? project.featuredImageSize === 'compact'
+                ? 'aspect-[16/8] md:aspect-[21/6]'
+                : 'aspect-[16/9] md:aspect-[21/9]'
+              : 'aspect-[16/10]',
           )}
         >
           <Image
@@ -89,7 +93,10 @@ export function ProjectCard({ project, featured = false }: ProjectCardProps) {
             }
             placeholder={BLUR[project.id] ? 'blur' : 'empty'}
             blurDataURL={BLUR[project.id]}
-            className="object-cover transition-transform duration-slow ease-out-quart group-hover:scale-[1.03]"
+            className={cn(
+              project.imageFit === 'contain' ? 'object-contain p-3' : 'object-cover',
+              'transition-transform duration-slow ease-out-quart group-hover:scale-[1.03]',
+            )}
           />
           <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-surface to-transparent" />
           <StatusBadge />
